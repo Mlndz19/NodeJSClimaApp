@@ -9,7 +9,7 @@ class Busquedas {
 
     get paramsMapBox(){
         return {
-            'access_token': 'pk.eyJ1IjoibWxuZHoxOSIsImEiOiJja3hhb3NydzEyb2syMzJwbDBna3Z3NGhlIn0.KjSiGqTUmgHmUZtjT_Dcag',
+            'access_token': process.env.MAPBOX_KEY,
             'limit': 5,
             'language': 'es'
         }
@@ -28,15 +28,17 @@ class Busquedas {
             const res = await instance.get();
 
 
-            console.log(res.data);
-            return[]; //retornar los lugares
+            return res.data.features.map(lugar => ({
+                id: lugar.id,
+                nombre: lugar.place_name,
+                lng: lugar.center[0],
+                lat: lugar.center[1],
+                
+            }));
 
         }catch(error){
             return [];
         }
-
-
-
     }
 }
 
