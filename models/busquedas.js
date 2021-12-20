@@ -40,6 +40,41 @@ class Busquedas {
             return [];
         }
     }
+
+    get paramsOpenWheater(){
+        return{
+            appid: process.env.OPENWEATHER_KEY,
+            units: 'metric',
+            lang: 'es'
+        }
+    }
+
+    async climaLugar(lat, lon){
+
+        try{
+
+            //instance axios.create()
+            const instance = axios.create({
+                baseURL: 'https://api.openweathermap.org/data/2.5/weather',
+                params: {...this.paramsOpenWheater, lat, lon}
+            })
+
+            const res = await instance.get();
+
+            //respuesta extraer data
+            return {
+                desc: res.data.weather[0].description,
+                min: res.data.main.temp_min,
+                max: res.data.main.temp_max,
+                temp: res.data.main.temp
+            }
+
+            
+        }catch(error){
+            console.log(error);
+        }
+
+    }
 }
 
 
